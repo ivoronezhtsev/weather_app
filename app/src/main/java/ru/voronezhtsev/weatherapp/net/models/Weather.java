@@ -1,7 +1,6 @@
 
-package ru.voronezhtsev.weatherapp.ru.voronezhtsev.weatherapp.net.models;
+package ru.voronezhtsev.weatherapp.net.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Weather {

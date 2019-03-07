@@ -1,4 +1,4 @@
-package ru.voronezhtsev.weatherapp.ru.voronezhtsev.weatherapp.net.models;
+package ru.voronezhtsev.weatherapp.net.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -27,25 +27,41 @@ public class Main {
     }
 
     /**
-     * Задать температуру
      * @param temp температура в кельвинах
      */
     public void setTemp(Double temp) {
         this.temp = temp;
     }
 
+    /**
+     * @return Минимальная температура, это отклонение от {@link Main#getTemp()}
+     * присущее большим городам и мегаполисам, в кельвинах, (опционально) //todo Проверить должно быть 0 при отсутствии в ответе
+     */
     public Double getTempMin() {
         return tempMin;
     }
 
+    /**
+     * @param tempMin Минимальная температура, это отклонение от {@link Main#getTemp()}
+     *       присущее большим городам и мегаполисам, в кельвинах, (опционально) //todo Проверить должно быть 0 при отсутствии в ответе
+     */
     public void setTempMin(Double tempMin) {
         this.tempMin = tempMin;
     }
 
+    /**
+     *
+     * @return Максимальная температура, это отклонение от {@link Main#getTemp()},
+     *         присущее большим городам и мегаполисам, в кельвинах, (опционально) //todo Проверить должно быть 0 при отсутствии в ответе
+     */
     public Double getTempMax() {
         return tempMax;
     }
 
+    /**
+     * @param tempMax Максимальная температура, это отклонение от {@link Main#getTemp()},
+     *      *         присущее большим городам и мегаполисам, в кельвинах, (опционально) //todo Проверить должно быть 0 при отсутствии в ответе
+     */
     public void setTempMax(Double tempMax) {
         this.tempMax = tempMax;
     }

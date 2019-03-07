@@ -1,10 +1,15 @@
-package ru.voronezhtsev.weatherapp.ru.voronezhtsev.weatherapp.net.models;
+package ru.voronezhtsev.weatherapp.net.models;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Response {
+/**
+ * Ответ со списком погоды от сервиса openweathermap.org
+ *
+ * @author Воронежцев Игорь on 10.01.2019
+ */
+public class WeatherResponse {
 
     @SerializedName("cod")
     private String cod;

@@ -1,18 +1,21 @@
 
-package ru.voronezhtsev.weatherapp.ru.voronezhtsev.weatherapp.net.models;
+package ru.voronezhtsev.weatherapp.net.models;
 
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
+/**
+ * Единица прогноза погоды по времени
+ *
+ * @author Воронежцев Игорь on 05.01.2019
+ */
 public class Forecast {
 
     @SerializedName("dt")
-    private Integer dt;
+    private Long dt;
     @SerializedName("main")
     private Main main;
-    @SerializedName("weather")
+    /*@SerializedName("weather")
     private List<Weather> weather = null;
     @SerializedName("clouds")
     private Clouds clouds;
@@ -23,25 +26,41 @@ public class Forecast {
     @SerializedName("sys")
     private Sys sys;
     @SerializedName("dt_txt")
-    private String dtTxt;
+    private String dtTxt;*/
 
-    public Integer getDt() {
+    /**
+     * Вернуть время и дату измерения, unix, UTC
+     * @return время и дата измерения, мс, с начала эпохи
+     */
+    public Long getDt() {
         return dt;
     }
 
-    public void setDt(Integer dt) {
+    /**
+     * Задать время и дату измерения, unix, UTC
+     * @param dt время и дата измерения, мс с начала эпохи
+     */
+    public void setDt(Long dt) {
         this.dt = dt;
     }
 
+    /**
+     * Вернуть основной блок прогноза {@link Main}
+     * @return основной блок прогноза
+     */
     public Main getMain() {
         return main;
     }
 
+    /**
+     * Задать основной блок прогноза {@link Main}
+     * @param main основной блок прогноза
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
-    public List<Weather> getWeather() {
+    /*public List<Weather> getWeather() {
         return weather;
     }
 
@@ -87,5 +106,5 @@ public class Forecast {
 
     public void setDtTxt(String dtTxt) {
         this.dtTxt = dtTxt;
-    }
+    }*/
 }
