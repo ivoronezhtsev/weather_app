@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static String FORECAST_DOWNLOADED = "ru.voronezhtsev.weatherapp.forecast.downloaded";
     public static String FORECAST_DOWNLOAD_FAILS = "ru.voronezhtsev.weatherapp.forecast.download.fails";
-    //todo Dagger2 чтобы не создавать два раза инстанс хелпера, инжектить в презентере
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

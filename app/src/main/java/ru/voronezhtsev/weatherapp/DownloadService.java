@@ -12,6 +12,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
+import ru.voronezhtsev.weatherapp.di.DaggerWeatherComponent;
+import ru.voronezhtsev.weatherapp.di.WeatherComponent;
 import ru.voronezhtsev.weatherapp.net.WeatherResponseConverter;
 import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 import ru.voronezhtsev.weatherapp.net.models.WeatherResponse;
@@ -34,11 +36,8 @@ public class DownloadService extends IntentService {
      */
     public DownloadService(String name) {
         super(name);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org/data/2.5/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mWeatherService = retrofit.create(WeatherService.class);
+        WeatherComponent component = DaggerWeatherComponent.builder().build();
+        mWeatherService = component.getWeatherService();
     }
 
     @Override
