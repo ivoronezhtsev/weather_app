@@ -1,23 +1,23 @@
-package ru.voronezhtsev.weatherapp.net;
+package ru.voronezhtsev.weatherapp.db;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.voronezhtsev.weatherapp.db.entities.Forecast;
-import ru.voronezhtsev.weatherapp.net.models.WeatherResponse;
+import ru.voronezhtsev.weatherapp.net.models.ForecastsResponse;
 
 /**
- * Конвертер ответа с прогнозом погоды от сервера, в в формат для записи в БД
+ * Конвертер ответа с прогнозом погоды от сервера, в формат для записи в БД
  *
  * @author Воронежцев Игорь
  */
-public class WeatherResponseConverter {
+public class ResponseConverter {
 
     /**
      * @param response Ответ от сервера с прогнозом погоды
      * @return Прогноз погоды для сохранения в БД
      */
-    public static List<Forecast> convert(WeatherResponse response) {
+    public List<Forecast> convert(ForecastsResponse response) {
         List<Forecast> forecasts = new ArrayList<>();
         for(ru.voronezhtsev.weatherapp.net.models.Forecast f : response.getForecast()) {
             Forecast forecast = new Forecast(f.getDt(),

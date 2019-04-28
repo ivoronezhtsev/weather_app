@@ -1,32 +1,29 @@
-package ru.voronezhtsev.weatherapp;
+package ru.voronezhtsev.weatherapp.view;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+
+import ru.voronezhtsev.weatherapp.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
 
-    public static String FORECAST_DOWNLOADED = "ru.voronezhtsev.weatherapp.forecast.downloaded";
-    public static String FORECAST_DOWNLOAD_FAILS = "ru.voronezhtsev.weatherapp.forecast.download.fails";
-
+    //public static String FORECAST_DOWNLOADED = "ru.voronezhtsev.weatherapp.forecast.downloaded";
+    //public static String FORECAST_DOWNLOAD_FAILS = "ru.voronezhtsev.weatherapp.forecast.download.fails";
+    private MainPresenter mMainPresenter = new MainPresenter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null) {
+        /*if(savedInstanceState == null) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(FORECAST_DOWNLOADED);
             intentFilter.addAction(FORECAST_DOWNLOAD_FAILS);
             LocalBroadcastManager.getInstance(this).registerReceiver(mUpdateReceiver,
                     intentFilter);
             startService(new Intent(this, DownloadService.class));
-        }
+        }*/
+        mMainPresenter.onAttachView(this);
     }
 
     @Override
@@ -37,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mUpdateReceiver);
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mUpdateReceiver);
     }
-    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (FORECAST_DOWNLOADED.equals(intent.getAction())) {
@@ -48,5 +45,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"Download fails", Toast.LENGTH_SHORT).show();
             }
         }
-    };
+    };*/
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainPresenter.onDetachView();
+    }
+
+    @Override
+    public void showTemperature(int temp) {
+
+    }
 }

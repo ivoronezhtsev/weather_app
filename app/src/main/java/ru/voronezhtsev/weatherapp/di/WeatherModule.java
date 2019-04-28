@@ -1,13 +1,29 @@
 package ru.voronezhtsev.weatherapp.di;
 
+import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
+import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
+import ru.voronezhtsev.weatherapp.db.ResponseConverter;
 import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 
 @Module
-public class RetrofitModule {
+public class WeatherModule {
+
+    private Context mContext;
+
+    public WeatherModule(Context context) {
+        mContext = context;
+    }
+
+    @Provides
+    public ForecastsRepository provodeForecastsRepository() {
+        return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter());
+    }
 
     @Provides
     WeatherService provideWeatherService(Retrofit retrofit) {
