@@ -2,28 +2,37 @@ package ru.voronezhtsev.weatherapp.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
+
+import java.util.List;
 
 import ru.voronezhtsev.weatherapp.R;
+import ru.voronezhtsev.weatherapp.di.DaggerWeatherComponent;
+import ru.voronezhtsev.weatherapp.di.WeatherComponent;
+import ru.voronezhtsev.weatherapp.di.WeatherModule;
+import ru.voronezhtsev.weatherapp.net.models.forecast.Forecast;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
-    //public static String FORECAST_DOWNLOADED = "ru.voronezhtsev.weatherapp.forecast.downloaded";
-    //public static String FORECAST_DOWNLOAD_FAILS = "ru.voronezhtsev.weatherapp.forecast.download.fails";
-    private MainPresenter mMainPresenter = new MainPresenter();
+    private MainPresenter mMainPresenter;
+    private TextView mCurrentTemp;
+    private RecyclerView mForecastRecycler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*if(savedInstanceState == null) {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(FORECAST_DOWNLOADED);
-            intentFilter.addAction(FORECAST_DOWNLOAD_FAILS);
-            LocalBroadcastManager.getInstance(this).registerReceiver(mUpdateReceiver,
-                    intentFilter);
-            startService(new Intent(this, DownloadService.class));
-        }*/
+        mCurrentTemp = findViewById(R.id.current_temp);
+        WeatherComponent component = DaggerWeatherComponent.builder().weatherModule(new WeatherModule(this)).build();
+        mMainPresenter = new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository());
         mMainPresenter.onAttachView(this);
+
+        mForecastRecycler = findViewById(R.id.forecast_recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mForecastRecycler.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -34,18 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onStop() {
         super.onStop();
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mUpdateReceiver);
     }
-    /*private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (FORECAST_DOWNLOADED.equals(intent.getAction())) {
-                Toast.makeText(MainActivity.this,"Downloaded", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this,"Download fails", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };*/
 
     @Override
     protected void onDestroy() {
@@ -54,7 +52,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void showTemperature(int temp) {
+    public void showTemperature(double temp) {
+        mCurrentTemp.setText(TempUtils.trimZeroes(Math.round(temp)));
+    }
 
+    @Override
+    public void showForecast(List<Forecast> forecast) {
+        mForecastRecycler.setAdapter(new ForecastAdapter(forecast));
     }
 }

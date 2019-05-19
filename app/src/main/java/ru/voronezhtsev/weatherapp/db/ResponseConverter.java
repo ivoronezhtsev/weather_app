@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.voronezhtsev.weatherapp.db.entities.Forecast;
-import ru.voronezhtsev.weatherapp.net.models.ForecastsResponse;
+import ru.voronezhtsev.weatherapp.net.models.forecast.ForecastsResponse;
 
 /**
  * Конвертер ответа с прогнозом погоды от сервера, в формат для записи в БД
@@ -19,7 +19,7 @@ public class ResponseConverter {
      */
     public List<Forecast> convert(ForecastsResponse response) {
         List<Forecast> forecasts = new ArrayList<>();
-        for(ru.voronezhtsev.weatherapp.net.models.Forecast f : response.getForecast()) {
+        for (ru.voronezhtsev.weatherapp.net.models.forecast.Forecast f : response.getForecast()) {
             Forecast forecast = new Forecast(f.getDt(),
                     f.getMain().getTemp(),
                     f.getMain().getTempMin(),

@@ -1,4 +1,4 @@
-package ru.voronezhtsev.weatherapp.net.models;
+package ru.voronezhtsev.weatherapp.net.models.forecast;
 
 import com.google.gson.annotations.SerializedName;
 

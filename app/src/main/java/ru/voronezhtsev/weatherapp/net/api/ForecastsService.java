@@ -2,7 +2,7 @@ package ru.voronezhtsev.weatherapp.net.api;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.voronezhtsev.weatherapp.net.models.ForecastsResponse;
+import ru.voronezhtsev.weatherapp.net.models.forecast.ForecastsResponse;
 import rx.Single;
 
 public interface ForecastsService {

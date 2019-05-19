@@ -5,10 +5,13 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.db.ResponseConverter;
+import ru.voronezhtsev.weatherapp.db.WeatherRepository;
+import ru.voronezhtsev.weatherapp.net.api.ForecastsService;
 import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 
 @Module
@@ -21,8 +24,9 @@ public class WeatherModule {
     }
 
     @Provides
-    public ForecastsRepository provodeForecastsRepository() {
-        return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter());
+    public ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService) {
+        return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter(),
+                forecastsService);
     }
 
     @Provides
@@ -31,11 +35,23 @@ public class WeatherModule {
     }
 
     @Provides
+    ForecastsService provideForecastsService(Retrofit retrofit) {
+        return retrofit.create(ForecastsService.class);
+    }
+
+    @Provides
     Retrofit provideRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        return retrofit;
+
     }
+
+    @Provides
+    WeatherRepository provideWeatherRepository(WeatherService weatherService) {
+        return new WeatherRepository(weatherService);
+    }
+
 }

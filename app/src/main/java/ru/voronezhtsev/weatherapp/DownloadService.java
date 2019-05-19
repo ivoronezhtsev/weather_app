@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 
 import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
-import ru.voronezhtsev.weatherapp.di.DaggerWeatherComponent;
-import ru.voronezhtsev.weatherapp.di.WeatherComponent;
-import ru.voronezhtsev.weatherapp.di.WeatherModule;
 
 public class DownloadService extends IntentService {
     private static final String TAG = "DownloadService";
@@ -29,9 +26,9 @@ public class DownloadService extends IntentService {
      */
     public DownloadService(String name) {
         super(name);
-        WeatherComponent component = DaggerWeatherComponent.builder().weatherModule(new WeatherModule(this)).build();
+        //WeatherComponent component = DaggerWeatherComponent.builder().weatherModule(new WeatherModule(this)).build();
         //mWeatherService = component.getWeatherService();
-        mForecastsRepository = component.getForecastsRepository();
+        //mForecastsRepository = component.getForecastsRepository();
     }
 
     @Override
