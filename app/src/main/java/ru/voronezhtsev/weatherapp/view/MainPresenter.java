@@ -29,7 +29,11 @@ public class MainPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(forecastsResponse -> {
-                    mMainView.showForecast(forecastsResponse.getForecast());
+                    if (forecastsResponse.getForecast().size() >= 7) {
+                        mMainView.showForecast(forecastsResponse.getForecast().subList(0, 7));
+                    } else {
+                        mMainView.showForecast(forecastsResponse.getForecast());
+                    }
                 }, error -> {
                 });
 

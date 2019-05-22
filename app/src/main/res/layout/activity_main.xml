@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.MainActivity"
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/current_temp"
@@ -14,13 +15,22 @@
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
         app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline"
-        tools:text="18" />
+        tools:text="18"
+        android:textColor="@color/white" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/current_temp"
+        android:background="@drawable/icons8_summer_96"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
+        app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/degree"
         android:textSize="32sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
         app:layout_constraintStart_toEndOf="@id/vertical_guideline"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
@@ -53,5 +63,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/horizontal_forecast_guideline" />
+        app:layout_constraintTop_toTopOf="@id/horizontal_forecast_guideline"
+        android:background="@drawable/rectangle" />
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@
         android:layout_margin="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         tools:text="15:00" />
 
     <TextView
@@ -17,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
+        android:textColor="@color/white"
         tools:text="21°" />
     <!--todo Constraint число с градусами ровно по центру времени где точки-->
 </LinearLayout>
