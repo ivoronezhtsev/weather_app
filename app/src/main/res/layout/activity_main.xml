@@ -8,12 +8,35 @@
     android:background="@color/colorPrimary">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/vertical_guideline"
+        app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
+        android:text="@string/city"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/current_time_text_clock"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold" />
+
+    <TextClock
+        android:id="@+id/current_time_text_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format24Hour="EEE, dd MMM HH:mm"
+        android:format12Hour="EEE, dd MMM h:mm a"
+        app:layout_constraintStart_toStartOf="@id/vertical_guideline"
+        app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
+        app:layout_constraintBottom_toTopOf="@id/current_temp"
+        android:layout_marginBottom="10dp"
+        tools:text="чт, 23 мая 11:03"
+        android:textColor="@color/gray" />
+    <TextView
         android:id="@+id/current_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
+        android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
-        app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
+        app:layout_constraintStart_toEndOf="@id/vertical_guideline"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline"
         tools:text="18"
         android:textColor="@color/white" />
@@ -22,17 +45,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/current_temp"
-        android:background="@drawable/icons8_summer_96"
+        android:background="@drawable/icons8_summer_50"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/degree"
-        android:textSize="32sp"
+        android:textSize="48sp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
-        app:layout_constraintStart_toEndOf="@id/vertical_guideline"
+        app:layout_constraintStart_toEndOf="@id/current_temp"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
 
     <android.support.constraint.Guideline

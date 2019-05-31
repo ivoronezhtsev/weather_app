@@ -1,5 +1,7 @@
 package ru.voronezhtsev.weatherapp.view;
 
+import android.util.Log;
+
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.db.WeatherRepository;
 import rx.android.schedulers.AndroidSchedulers;
@@ -10,6 +12,8 @@ public class MainPresenter {
     private MainView mMainView;
     private WeatherRepository mWeatherRepository;
     private ForecastsRepository mForecastsRepository;
+    private static final String TAG = "MainPresenter";
+
 
     MainPresenter(WeatherRepository weatherRepository, ForecastsRepository forecastsRepository) {
         mWeatherRepository = weatherRepository;
@@ -24,6 +28,7 @@ public class MainPresenter {
                 .subscribe(response -> {
                     mMainView.showTemperature(response.getMain().getTemp());
                 }, throwable -> {
+                    Log.d(TAG, "Error while getting current weather", throwable);
                 });
         mForecastsRepository.getForecast()
                 .subscribeOn(Schedulers.io())
@@ -36,7 +41,6 @@ public class MainPresenter {
                     }
                 }, error -> {
                 });
-
     }
 
     void onDetachView() {

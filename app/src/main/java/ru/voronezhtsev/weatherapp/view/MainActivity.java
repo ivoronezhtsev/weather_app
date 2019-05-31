@@ -8,10 +8,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ru.voronezhtsev.weatherapp.App;
 import ru.voronezhtsev.weatherapp.R;
-import ru.voronezhtsev.weatherapp.di.DaggerWeatherComponent;
 import ru.voronezhtsev.weatherapp.di.WeatherComponent;
-import ru.voronezhtsev.weatherapp.di.WeatherModule;
 import ru.voronezhtsev.weatherapp.net.models.forecast.Forecast;
 
 
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCurrentTemp = findViewById(R.id.current_temp);
-        WeatherComponent component = DaggerWeatherComponent.builder().weatherModule(new WeatherModule(this)).build();
+        WeatherComponent component = App.getInstance().getWeatherComponent();
         mMainPresenter = new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository());
         mMainPresenter.onAttachView(this);
 

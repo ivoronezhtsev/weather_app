@@ -2,6 +2,8 @@ package ru.voronezhtsev.weatherapp.di;
 
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -24,22 +26,26 @@ public class WeatherModule {
     }
 
     @Provides
-    public ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService) {
+    @Singleton
+    ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService) {
         return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter(),
                 forecastsService);
     }
 
+    @Singleton
     @Provides
     WeatherService provideWeatherService(Retrofit retrofit) {
         return retrofit.create(WeatherService.class);
     }
 
     @Provides
+    @Singleton
     ForecastsService provideForecastsService(Retrofit retrofit) {
         return retrofit.create(ForecastsService.class);
     }
 
     @Provides
+    @Singleton
     Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org/data/2.5/")
@@ -50,6 +56,7 @@ public class WeatherModule {
     }
 
     @Provides
+    @Singleton
     WeatherRepository provideWeatherRepository(WeatherService weatherService) {
         return new WeatherRepository(weatherService);
     }
