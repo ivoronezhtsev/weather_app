@@ -2,14 +2,17 @@ package ru.voronezhtsev.weatherapp.view;
 
 import android.util.Log;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.db.WeatherRepository;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainPresenter {
+@InjectViewState
+public class MainPresenter extends MvpPresenter<MainView> {
 
-    private MainView mMainView;
     private WeatherRepository mWeatherRepository;
     private ForecastsRepository mForecastsRepository;
     private static final String TAG = "MainPresenter";
@@ -20,13 +23,14 @@ public class MainPresenter {
         mForecastsRepository = forecastsRepository;
     }
 
-    void onAttachView(MainView mainView) {
-        mMainView = mainView;
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         mWeatherRepository.getWeather()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    mMainView.showTemperature(response.getMain().getTemp());
+                    getViewState().showTemperature(response.getMain().getTemp());
                 }, throwable -> {
                     Log.d(TAG, "Error while getting current weather", throwable);
                 });
@@ -35,15 +39,11 @@ public class MainPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(forecastsResponse -> {
                     if (forecastsResponse.getForecast().size() >= 7) {
-                        mMainView.showForecast(forecastsResponse.getForecast().subList(0, 7));
+                        getViewState().showForecast(forecastsResponse.getForecast().subList(0, 7));
                     } else {
-                        mMainView.showForecast(forecastsResponse.getForecast());
+                        getViewState().showForecast(forecastsResponse.getForecast());
                     }
                 }, error -> {
                 });
-    }
-
-    void onDetachView() {
-
     }
 }

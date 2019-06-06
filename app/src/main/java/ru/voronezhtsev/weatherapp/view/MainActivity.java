@@ -1,10 +1,13 @@
 package ru.voronezhtsev.weatherapp.view;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.List;
 
@@ -14,21 +17,23 @@ import ru.voronezhtsev.weatherapp.di.WeatherComponent;
 import ru.voronezhtsev.weatherapp.net.models.forecast.Forecast;
 
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends MvpAppCompatActivity implements MainView {
 
-    private MainPresenter mMainPresenter;
+    @InjectPresenter
+    MainPresenter mMainPresenter;
     private TextView mCurrentTemp;
     private RecyclerView mForecastRecycler;
 
+    @ProvidePresenter
+    MainPresenter providePresenter() {
+        WeatherComponent component = App.getInstance().getWeatherComponent();
+        return new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository());
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCurrentTemp = findViewById(R.id.current_temp);
-        WeatherComponent component = App.getInstance().getWeatherComponent();
-        mMainPresenter = new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository());
-        mMainPresenter.onAttachView(this);
-
         mForecastRecycler = findViewById(R.id.forecast_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mForecastRecycler.setLayoutManager(layoutManager);
@@ -47,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMainPresenter.onDetachView();
     }
 
     @Override
