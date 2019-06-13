@@ -1,8 +1,10 @@
 package ru.voronezhtsev.weatherapp.db;
 
+import android.location.Location;
+
+import io.reactivex.Single;
 import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 import ru.voronezhtsev.weatherapp.net.models.weather.WeatherResponse;
-import rx.Single;
 
 public class WeatherRepository {
 
@@ -21,8 +23,10 @@ public class WeatherRepository {
         return response;
     }
 
-    public Single<WeatherResponse> getWeather() {
-        return mWeatherService.getWeather(MOSCOW, APP_ID)
-                .map(this::kelvinToCelcius);
+    public Single<WeatherResponse> getWeather(Location location) {
+        /*return mWeatherService.getWeather(String.valueOf(location.getLatitude()),
+                String.valueOf(location.getLatitude()), APP_ID)
+                .map(this::kelvinToCelcius);*/
+        return Single.just(null);
     }
 }
