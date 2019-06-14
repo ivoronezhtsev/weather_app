@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
+import ru.voronezhtsev.weatherapp.db.LocationRepository;
 import ru.voronezhtsev.weatherapp.db.WeatherRepository;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -15,17 +16,30 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private WeatherRepository mWeatherRepository;
     private ForecastsRepository mForecastsRepository;
+    private LocationRepository mLocationRepository;
+
     private static final String TAG = "MainPresenter";
 
 
-    MainPresenter(WeatherRepository weatherRepository, ForecastsRepository forecastsRepository) {
+    MainPresenter(WeatherRepository weatherRepository, ForecastsRepository forecastsRepository,
+                  LocationRepository locationRepository) {
         mWeatherRepository = weatherRepository;
         mForecastsRepository = forecastsRepository;
+        mLocationRepository = locationRepository;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        mLocationRepository.getLocation()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(location -> {
+                    Log.d(TAG, String.valueOf(location.getLatitude()));
+                }, throwable -> {
+                    Log.d(TAG, "error getting location", throwable);
+                });
+
         mWeatherRepository.getWeather()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

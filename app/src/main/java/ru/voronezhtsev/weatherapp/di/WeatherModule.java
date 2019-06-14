@@ -11,6 +11,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
+import ru.voronezhtsev.weatherapp.db.LocationRepository;
 import ru.voronezhtsev.weatherapp.db.ResponseConverter;
 import ru.voronezhtsev.weatherapp.db.WeatherRepository;
 import ru.voronezhtsev.weatherapp.net.api.ForecastsService;
@@ -61,4 +62,9 @@ public class WeatherModule {
         return new WeatherRepository(weatherService);
     }
 
+    @Provides
+    @Singleton
+    LocationRepository provideLocationRepository() {
+        return new LocationRepository(mContext);
+    }
 }

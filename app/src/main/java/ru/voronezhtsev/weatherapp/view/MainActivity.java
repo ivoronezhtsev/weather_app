@@ -1,5 +1,6 @@
 package ru.voronezhtsev.weatherapp.view;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import ru.voronezhtsev.weatherapp.net.models.forecast.Forecast;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
+    private static final int REQUEST_FINE_LOCATION = 1;
     @InjectPresenter
     MainPresenter mMainPresenter;
     private TextView mCurrentTemp;
@@ -27,7 +29,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @ProvidePresenter
     MainPresenter providePresenter() {
         WeatherComponent component = App.getInstance().getWeatherComponent();
-        return new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository());
+        return new MainPresenter(component.getWeatherRepository(), component.getForecastsRepository(),
+                component.getLocationRepository());
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         mForecastRecycler = findViewById(R.id.forecast_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mForecastRecycler.setLayoutManager(layoutManager);
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
     }
 
     @Override
