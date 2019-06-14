@@ -7,13 +7,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.voronezhtsev.weatherapp.db.ForecastsDAO;
-import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
-import ru.voronezhtsev.weatherapp.db.LocationRepository;
-import ru.voronezhtsev.weatherapp.db.ResponseConverter;
-import ru.voronezhtsev.weatherapp.db.WeatherRepository;
+import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
+import ru.voronezhtsev.weatherapp.data.db.ForecastsRepository;
+import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
+import ru.voronezhtsev.weatherapp.data.repositories.LocationRepository;
+import ru.voronezhtsev.weatherapp.data.repositories.WeatherRepository;
+import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 import ru.voronezhtsev.weatherapp.net.api.ForecastsService;
 import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 
@@ -51,7 +52,7 @@ public class WeatherModule {
         return new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
     }
@@ -66,5 +67,12 @@ public class WeatherModule {
     @Singleton
     LocationRepository provideLocationRepository() {
         return new LocationRepository(mContext);
+    }
+
+    @Provides
+    @Singleton
+    WeatherInteractor provideWeatherInteractor(LocationRepository locationRepository,
+                                               WeatherRepository weatherRepository) {
+        return new WeatherInteractor(weatherRepository, locationRepository);
     }
 }

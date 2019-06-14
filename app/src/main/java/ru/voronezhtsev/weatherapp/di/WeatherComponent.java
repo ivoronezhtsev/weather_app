@@ -3,20 +3,15 @@ package ru.voronezhtsev.weatherapp.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import ru.voronezhtsev.weatherapp.db.ForecastsRepository;
-import ru.voronezhtsev.weatherapp.db.LocationRepository;
-import ru.voronezhtsev.weatherapp.db.WeatherRepository;
-import ru.voronezhtsev.weatherapp.net.api.WeatherService;
+import ru.voronezhtsev.weatherapp.data.db.ForecastsRepository;
+import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 
 @Singleton
 @Component(modules = {WeatherModule.class})
 public interface WeatherComponent {
 
-    WeatherService getWeatherService();
 
     ForecastsRepository getForecastsRepository();
 
-    WeatherRepository getWeatherRepository();
-
-    LocationRepository getLocationRepository();
+    WeatherInteractor getWeatherInteractor();
 }
