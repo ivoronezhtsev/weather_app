@@ -3,8 +3,8 @@ package ru.voronezhtsev.weatherapp.data.repositories;
 import io.reactivex.Single;
 import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
+import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
 import ru.voronezhtsev.weatherapp.models.data.network.forecast.ForecastsResponse;
-import ru.voronezhtsev.weatherapp.net.api.ForecastsService;
 
 public class ForecastsRepository {
     private static final String MOSCOW = "524901";

@@ -10,13 +10,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
-import ru.voronezhtsev.weatherapp.data.db.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
+import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
+import ru.voronezhtsev.weatherapp.data.remote.WeatherService;
+import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.LocationRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.WeatherRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
-import ru.voronezhtsev.weatherapp.net.api.ForecastsService;
-import ru.voronezhtsev.weatherapp.net.api.WeatherService;
 
 @Module
 public class WeatherModule {
