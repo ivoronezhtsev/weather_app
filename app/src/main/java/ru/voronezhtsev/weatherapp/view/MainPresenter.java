@@ -40,14 +40,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     Log.d(TAG, "error getting location", throwable);
                 });
 
-        mWeatherRepository.getWeather()
+        /*mWeatherRepository.getWeather()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     getViewState().showTemperature(response.getMain().getTemp());
                 }, throwable -> {
                     Log.d(TAG, "Error while getting current weather", throwable);
-                });
+                });*/
         mForecastsRepository.getForecast()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

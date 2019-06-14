@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import rx.Single;
 import rx.subjects.PublishSubject;
 
 public class LocationRepository {
@@ -46,7 +47,7 @@ public class LocationRepository {
         mContext = context;
     }
 
-    public PublishSubject<Location> getLocation() {
+    public Single<Location> getLocation() {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -60,7 +61,7 @@ public class LocationRepository {
             return null;
         }
         mLocationManager.requestSingleUpdate(criteria, mLocationListener, null);
-        return mLocationSubject;
+        return mLocationSubject.toSingle();
     }
 
 }

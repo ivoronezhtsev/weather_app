@@ -1,9 +1,11 @@
 package ru.voronezhtsev.weatherapp;
 
-import io.reactivex.Single;
+import android.location.Location;
 import ru.voronezhtsev.weatherapp.db.LocationRepository;
 import ru.voronezhtsev.weatherapp.db.WeatherRepository;
 import ru.voronezhtsev.weatherapp.net.models.weather.WeatherResponse;
+import rx.Single;
+import rx.functions.Func1;
 
 
 public class WeatherInteractor {
@@ -17,6 +19,8 @@ public class WeatherInteractor {
     }
 
     public Single<WeatherResponse> getWeather() {
-        return mWeatherRepository.getWeather(mLocationRepository.getLocation().toBlocking().first());
+        return mLocationRepository.getLocation()
+                .flatMap((Func1<Location, Single<WeatherResponse>>)
+                        location -> mWeatherRepository.getWeather(location));
     }
 }
