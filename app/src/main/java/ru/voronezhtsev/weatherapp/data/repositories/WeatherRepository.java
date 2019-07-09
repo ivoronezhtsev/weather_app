@@ -1,15 +1,14 @@
 package ru.voronezhtsev.weatherapp.data.repositories;
 
-
 import io.reactivex.Single;
+import ru.voronezhtsev.weatherapp.data.remote.WeatherResponseConverter;
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService;
-import ru.voronezhtsev.weatherapp.models.data.network.weather.WeatherResponse;
-import ru.voronezhtsev.weatherapp.models.domain.LocationEntity;
+import ru.voronezhtsev.weatherapp.domain.IWeatherRepository;
+import ru.voronezhtsev.weatherapp.models.domain.LocationInfo;
+import ru.voronezhtsev.weatherapp.models.domain.WeatherInfo;
 
 
-public class WeatherRepository {
-
-    private static final String MOSCOW = "524901";
+public class WeatherRepository implements IWeatherRepository {
     private static final String APP_ID = "458a017c6453d7ee6e2cfa3a5ddec547";
 
     private WeatherService mWeatherService;
@@ -18,14 +17,9 @@ public class WeatherRepository {
         mWeatherService = weatherService;
     }
 
-    private WeatherResponse kelvinToCelcius(WeatherResponse response) {
-        //todo Переделать после того как уберу лишние поля, добавить конструктор копирования
-        response.getMain().setTemp(response.getMain().getTemp() - 273.15);
-        return response;
-    }
-
-    public Single<WeatherResponse> getWeather(LocationEntity locationEntity) {
-        return mWeatherService.getWeather(locationEntity.getLatitude(), locationEntity.getLongitude(), APP_ID)
-                .map(this::kelvinToCelcius);
+    public Single<WeatherInfo> getWeather(LocationInfo location) {
+        WeatherResponseConverter convert = new WeatherResponseConverter();
+        return mWeatherService.getWeather(location.getLatitude(), location.getLongitude(), APP_ID)
+                .map(convert::convert);
     }
 }

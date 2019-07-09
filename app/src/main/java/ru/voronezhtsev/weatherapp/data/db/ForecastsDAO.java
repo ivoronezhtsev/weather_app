@@ -13,11 +13,11 @@ import ru.voronezhtsev.weatherapp.models.data.db.Forecast;
 
 public class ForecastsDAO extends SQLiteOpenHelper {
 
-    public static final String TABLE_NAME = "forecasts";
-    public static final String DATETIME_COLUMN = "datetime";
-    public static final String TEMP_COLUMN = "temperature";
-    public static final String TEMP_MIN_COLUMN = "temperature_min";
-    public static final String TEMP_MAX_COLUMN = "temperature_max";
+    private static final String TABLE_NAME = "forecasts";
+    private static final String DATETIME_COLUMN = "datetime";
+    private static final String TEMP_COLUMN = "temperature";
+    private static final String TEMP_MIN_COLUMN = "temperature_min";
+    private static final String TEMP_MAX_COLUMN = "temperature_max";
     private static final String TAG = "ForecastsDAO";
     private static final String ERR_ADD_FORECAST = "Error while adding forecast with datetime: ";
     private static final int VERSION = 1;

@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
@@ -15,6 +16,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private WeatherInteractor mWeatherInteractor;
     private ForecastsRepository mForecastsRepository;
+    private Disposable mWeatherDisposable;
+    private Disposable mForecastDisposable;
+
     private static final String TAG = "MainPresenter";
 
     MainPresenter(WeatherInteractor weatherInteractor, ForecastsRepository forecastsRepository) {
@@ -25,15 +29,15 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        mWeatherInteractor.getWeather()
+        mWeatherDisposable = mWeatherInteractor.getWeather()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    getViewState().showTemperature(response.getMain().getTemp());
+                    getViewState().showWeather(response);
                 }, throwable -> {
-                    Log.d(TAG, "Error while getting current weather", throwable);
+                    Log.d(TAG, "Error while getting current weatherInfo", throwable);
                 });
-        mForecastsRepository.getForecast()
+        mForecastDisposable = mForecastsRepository.getForecast()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(forecastsResponse -> {
@@ -44,5 +48,13 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     }
                 }, error -> {
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //todo Как работать c Disposable
+        mWeatherDisposable.dispose();
+        mForecastDisposable.dispose();
     }
 }

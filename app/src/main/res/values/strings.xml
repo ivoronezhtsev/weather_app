@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="degree">°</string>
-    <string name="city">Москва</string>
+    <string name="service">OpenWeatherMap</string>
 </resources>

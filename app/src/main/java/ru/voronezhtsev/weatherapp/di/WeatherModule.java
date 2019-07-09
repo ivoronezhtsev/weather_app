@@ -15,6 +15,7 @@ import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService;
 import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.LocationRepository;
+import ru.voronezhtsev.weatherapp.data.repositories.WeatherLocalRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.WeatherRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 
@@ -69,10 +70,17 @@ public class WeatherModule {
         return new LocationRepository(mContext);
     }
 
+    @Singleton
+    @Provides
+    WeatherLocalRepository provideWeatherLocalRepository() {
+        return new WeatherLocalRepository(mContext);
+    }
+
     @Provides
     @Singleton
     WeatherInteractor provideWeatherInteractor(LocationRepository locationRepository,
-                                               WeatherRepository weatherRepository) {
-        return new WeatherInteractor(weatherRepository, locationRepository);
+                                               WeatherRepository weatherRepository,
+                                               WeatherLocalRepository weatherLocalRepository) {
+        return new WeatherInteractor(weatherRepository, locationRepository, weatherLocalRepository);
     }
 }

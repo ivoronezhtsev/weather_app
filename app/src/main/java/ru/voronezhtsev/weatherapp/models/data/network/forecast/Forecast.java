@@ -15,8 +15,8 @@ public class Forecast {
     private Long dt;
     @SerializedName("main")
     private Main main;
-    /*@SerializedName("weather")
-    private List<Weather> weather = null;
+    /*@SerializedName("weatherInfo")
+    private List<WeatherInfo> weatherInfo = null;
     @SerializedName("clouds")
     private Clouds clouds;
     @SerializedName("wind")
@@ -60,12 +60,12 @@ public class Forecast {
         this.main = main;
     }
 
-    /*public List<Weather> getWeather() {
-        return weather;
+    /*public List<WeatherInfo> getWeather() {
+        return weatherInfo;
     }
 
-    public void setWeather(List<Weather> weather) {
-        this.weather = weather;
+    public void setWeather(List<WeatherInfo> weatherInfo) {
+        this.weatherInfo = weatherInfo;
     }
 
     public Clouds getClouds() {
