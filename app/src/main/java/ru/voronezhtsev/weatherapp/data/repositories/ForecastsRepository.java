@@ -4,11 +4,12 @@ import io.reactivex.Single;
 import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
 import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
-import ru.voronezhtsev.weatherapp.models.data.network.forecast.ForecastsResponse;
+import ru.voronezhtsev.weatherapp.models.data.network.ForecastsResponse;
+
+import static ru.voronezhtsev.weatherapp.data.Constants.APP_ID;
 
 public class ForecastsRepository {
     private static final String MOSCOW = "524901";
-    private static final String APP_ID = "458a017c6453d7ee6e2cfa3a5ddec547";
 
     private ForecastsDAO mForecastsDAO;
     private ResponseConverter mResponseConverter;

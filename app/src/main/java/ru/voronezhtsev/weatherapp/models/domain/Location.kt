@@ -1,6 +1,6 @@
 package ru.voronezhtsev.weatherapp.models.domain
 
-data class LocationInfo(
+data class Location(
         val latitude: String,
         val longitude: String
 )

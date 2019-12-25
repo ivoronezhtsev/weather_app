@@ -13,10 +13,13 @@ import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
 import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService;
+import ru.voronezhtsev.weatherapp.data.repositories.DefaultWeatherRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.LocationRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.WeatherLocalRepository;
-import ru.voronezhtsev.weatherapp.data.repositories.WeatherRepository;
+import ru.voronezhtsev.weatherapp.domain.ILocationRepository;
+import ru.voronezhtsev.weatherapp.domain.IWeatherLocalRepository;
+import ru.voronezhtsev.weatherapp.domain.IWeatherRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 
 @Module
@@ -60,27 +63,27 @@ public class WeatherModule {
 
     @Provides
     @Singleton
-    WeatherRepository provideWeatherRepository(WeatherService weatherService) {
-        return new WeatherRepository(weatherService);
+    IWeatherRepository provideWeatherRepository(WeatherService weatherService) {
+        return new DefaultWeatherRepository(weatherService);
     }
 
     @Provides
     @Singleton
-    LocationRepository provideLocationRepository() {
+    ILocationRepository provideLocationRepository() {
         return new LocationRepository(mContext);
     }
 
     @Singleton
     @Provides
-    WeatherLocalRepository provideWeatherLocalRepository() {
+    IWeatherLocalRepository provideWeatherLocalRepository() {
         return new WeatherLocalRepository(mContext);
     }
 
     @Provides
     @Singleton
-    WeatherInteractor provideWeatherInteractor(LocationRepository locationRepository,
-                                               WeatherRepository weatherRepository,
-                                               WeatherLocalRepository weatherLocalRepository) {
+    WeatherInteractor provideWeatherInteractor(ILocationRepository locationRepository,
+                                               IWeatherRepository weatherRepository,
+                                               IWeatherLocalRepository weatherLocalRepository) {
         return new WeatherInteractor(weatherRepository, locationRepository, weatherLocalRepository);
     }
 }

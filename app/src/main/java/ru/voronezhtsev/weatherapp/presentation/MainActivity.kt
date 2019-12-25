@@ -7,10 +7,10 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.voronezhtsev.weatherapp.App
+import ru.voronezhtsev.weatherapp.App.Companion.component
 import ru.voronezhtsev.weatherapp.R
-import ru.voronezhtsev.weatherapp.models.data.network.forecast.Forecast
-import ru.voronezhtsev.weatherapp.models.domain.WeatherInfo
+import ru.voronezhtsev.weatherapp.models.data.network.Forecast
+import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
@@ -22,10 +22,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     internal lateinit var presenter: MainPresenter
 
     @ProvidePresenter
-    fun providePresenter(): MainPresenter {
-        val component = App.component
-        return MainPresenter(component.weatherInteractor, component.forecastsRepository)
-    }
+    fun providePresenter() = MainPresenter(component.weatherInteractor, component.forecastsRepository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +36,8 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         forecastRecycler.adapter = ForecastAdapter(forecast)
     }
 
-    override fun showWeather(weatherInfo: WeatherInfo) {
-        currentTemp.text = TempUtils.trimZeroes(Math.round(weatherInfo.temperature).toDouble())
-        currentCity.text = weatherInfo.city
+    override fun showWeather(weather: WeatherModel) {
+        currentTemp.text = weather.temp
+        currentCity.text = weather.city
     }
 }

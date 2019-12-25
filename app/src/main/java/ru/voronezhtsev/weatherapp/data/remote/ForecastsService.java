@@ -3,7 +3,7 @@ package ru.voronezhtsev.weatherapp.data.remote;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.voronezhtsev.weatherapp.models.data.network.forecast.ForecastsResponse;
+import ru.voronezhtsev.weatherapp.models.data.network.ForecastsResponse;
 
 public interface ForecastsService {
     /**

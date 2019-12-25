@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import ru.voronezhtsev.weatherapp.R;
-import ru.voronezhtsev.weatherapp.models.data.network.forecast.Forecast;
+import ru.voronezhtsev.weatherapp.models.data.network.Forecast;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
 

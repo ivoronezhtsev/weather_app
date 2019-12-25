@@ -1,20 +1,18 @@
 package ru.voronezhtsev.weatherapp.data.repositories;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.Objects;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import ru.voronezhtsev.weatherapp.data.WeatherConsts;
 import ru.voronezhtsev.weatherapp.domain.IWeatherLocalRepository;
-import ru.voronezhtsev.weatherapp.models.domain.WeatherInfo;
+import ru.voronezhtsev.weatherapp.models.domain.Weather;
+
+import static ru.voronezhtsev.weatherapp.data.Constants.DB_NAME;
 
 public class WeatherLocalRepository extends SQLiteOpenHelper implements IWeatherLocalRepository {
     private static final int VERSION = 1;
@@ -30,7 +28,7 @@ public class WeatherLocalRepository extends SQLiteOpenHelper implements IWeather
                     + ICON_COLUMN + " TEXT(10))";
 
     public WeatherLocalRepository(@Nullable Context context) {
-        super(context, WeatherConsts.DB_NAME, null, VERSION);
+        super(context, DB_NAME, null, VERSION);
     }
 
     @Override
@@ -42,8 +40,12 @@ public class WeatherLocalRepository extends SQLiteOpenHelper implements IWeather
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public Completable save(WeatherInfo weatherInfo) {
-        return Completable.fromAction(() -> {
+    @Override
+    @NonNull
+    public Completable save(Weather weather) {
+        return Completable.fromRunnable(() -> {
+        });
+        /*return Completable.fromAction(() -> {
             SQLiteDatabase database = getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put(TEMP_COLUMN, weatherInfo.getTemperature());
@@ -51,11 +53,13 @@ public class WeatherLocalRepository extends SQLiteOpenHelper implements IWeather
             cv.put(ICON_COLUMN, weatherInfo.getIconCode());
             database.insertOrThrow(TABLE_NAME, null, cv);
             database.close();
-        });
+        });*/
     }
 
-    public Maybe<WeatherInfo> getWeather() {
-        return Maybe.fromCallable(() -> {
+    @Override
+    @NonNull
+    public Maybe<Weather> getWeather() {
+        /*return Maybe.fromCallable(() -> {
             Cursor cursor = null;
             try {
                 SQLiteDatabase database = getReadableDatabase();
@@ -78,6 +82,8 @@ public class WeatherLocalRepository extends SQLiteOpenHelper implements IWeather
                 }
             }
             return null;
-        }).filter(Objects::isNull);
+        }).filter(Objects::isNull);*/
+        return Maybe.fromRunnable(() -> {
+        });
     }
 }
