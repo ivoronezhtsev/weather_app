@@ -1,8 +1,8 @@
 package ru.voronezhtsev.weatherapp.data.repositories
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.Context
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import io.reactivex.Single
@@ -12,8 +12,7 @@ import ru.voronezhtsev.weatherapp.models.domain.Location
 
 class LocationRepository(private val mContext: Context) : ILocationRepository {
     override val location: Single<Location?>
-        get() = if (ActivityCompat.checkSelfPermission(mContext,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        get() = if (ActivityCompat.checkSelfPermission(mContext, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
             Single.create { emitter: SingleEmitter<Location?> -> emitter.onError(SecurityException("Need location permissions")) }
         } else Single.create { emitter: SingleEmitter<Location?> ->
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
@@ -22,5 +21,4 @@ class LocationRepository(private val mContext: Context) : ILocationRepository {
                 emitter.onSuccess(locationInfo)
             }
         }
-
 }

@@ -13,7 +13,8 @@ import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 import kotlin.math.roundToLong
 
 @InjectViewState
-class MainPresenter(private val weatherInteractor: WeatherInteractor, private val forecastsRepository: ForecastsRepository) : MvpPresenter<MainView>() {
+class MainPresenter(private val weatherInteractor: WeatherInteractor,
+                    private val forecastsRepository: ForecastsRepository) : MvpPresenter<MainView>() {
     companion object {
         private const val TAG = "MainPresenter"
     }
