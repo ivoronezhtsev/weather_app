@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="input_city_margin">16dp</dimen>
+    <dimen name="continue_button_margin">16dp</dimen>
+</resources>

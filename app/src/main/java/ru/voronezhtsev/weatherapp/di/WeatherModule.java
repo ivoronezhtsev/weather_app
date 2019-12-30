@@ -25,16 +25,10 @@ import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 @Module
 public class WeatherModule {
 
-    private Context mContext;
-
-    public WeatherModule(Context context) {
-        mContext = context;
-    }
-
     @Provides
     @Singleton
-    ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService) {
-        return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter(),
+    ForecastsRepository provodeForecastsRepository(Context context, ForecastsService forecastsService) {
+        return new ForecastsRepository(ForecastsDAO.getInstance(context), new ResponseConverter(),
                 forecastsService);
     }
 
@@ -69,14 +63,14 @@ public class WeatherModule {
 
     @Provides
     @Singleton
-    ILocationRepository provideLocationRepository() {
-        return new LocationRepository(mContext);
+    ILocationRepository provideLocationRepository(Context context) {
+        return new LocationRepository(context);
     }
 
     @Singleton
     @Provides
-    IWeatherLocalRepository provideWeatherLocalRepository() {
-        return new WeatherLocalRepository(mContext);
+    IWeatherLocalRepository provideWeatherLocalRepository(Context context) {
+        return new WeatherLocalRepository(context);
     }
 
     @Provides

@@ -12,9 +12,18 @@ class DefaultWeatherRepository(private val weatherService: WeatherService) : IWe
 
     override fun getWeather(location: Location): Single<Weather> {
         return weatherService.getWeather(location.latitude, location.longitude, APP_ID)
-                .flatMap { weatherResponse: WeatherResponse ->
+                ?.flatMap { weatherResponse: WeatherResponse ->
                     Single.just(Weather(weatherResponse.main.temp - 273.15, weatherResponse.name,
-                            weatherResponse.weather.get(0).icon))
-                }
+                            weatherResponse.weather.get(0).icon, weatherResponse.coord.lon.toDouble(), weatherResponse.coord.lat.toDouble()))
+                }!!
     }
+
+    override fun getWeather(cityId: Long): Single<Weather> {
+        return weatherService.getWeather(cityId.toString(), APP_ID)
+                ?.flatMap { response: WeatherResponse ->
+                    Single.just(Weather(response.main.temp - 273.15,
+                            response.name, response.weather.get(0).icon, response.coord.lon.toDouble(), response.coord.lat.toDouble()))
+                }!!
+    }
+
 }

@@ -10,8 +10,8 @@ class WeatherInteractor(private val weatherRepository: IWeatherRepository,
                         private val locationRepository: ILocationRepository,
                         private val weatherLocalRepository: IWeatherLocalRepository) {
 
-    val weather: Single<Weather>
-        get() = locationRepository.location
+    fun weather(): Single<Weather> =
+            locationRepository.location
                 .flatMap { location: Location? ->
                     weatherRepository.getWeather(location!!).subscribeOn(Schedulers.io())
                             .map { weather: Weather ->
@@ -21,4 +21,6 @@ class WeatherInteractor(private val weatherRepository: IWeatherRepository,
                                 weather
                             }
                 }
+
+    fun weather(cityId: Long): Single<Weather> = weatherRepository.getWeather(cityId)
 }

@@ -57,7 +57,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         }
 
         void bind(Forecast forecast) {
-            mTemp.setText(TempUtils.trimZeroes(TempUtils.kelvinToCelcius(forecast.getMain().getTemp())));
+            //mTemp.setText(TempUtils.trimZeroes(TempUtils.kelvinToCelcius(forecast.getMain().getTemp())));
             mDatetime.setText(DISPLAY_FORMAT.format(forecast.getDt() * MILLISECOND));
         }
     }

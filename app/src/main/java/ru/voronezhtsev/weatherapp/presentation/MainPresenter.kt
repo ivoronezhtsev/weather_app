@@ -14,7 +14,7 @@ import kotlin.math.roundToLong
 
 @InjectViewState
 class MainPresenter(private val weatherInteractor: WeatherInteractor,
-                    private val forecastsRepository: ForecastsRepository) : MvpPresenter<MainView>() {
+                    private val forecastsRepository: ForecastsRepository, private val cityId: Long) : MvpPresenter<MainView>() {
     companion object {
         private const val TAG = "MainPresenter"
     }
@@ -22,7 +22,7 @@ class MainPresenter(private val weatherInteractor: WeatherInteractor,
     @SuppressLint("CheckResult")
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        weatherInteractor.weather
+        weatherInteractor.weather(cityId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
@@ -46,6 +46,14 @@ class MainPresenter(private val weatherInteractor: WeatherInteractor,
                 }, { error -> })
     }
 
+    @SuppressLint("CheckResult")
+    fun update(cityId: Long) {
+        weatherInteractor.weather(cityId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response -> viewState.showWeather(convert(response)) },
+                        { throwable -> Log.d(TAG, "Error while getting current weatherInfo", throwable) });
+    }
     private fun convert(weather: Weather) =
-            WeatherModel(weather.temp.roundToLong().toString(), weather.city, null)
+            WeatherModel(weather.temp.roundToLong().toString(), weather.city, weather.lon, weather.lat, null)
 }

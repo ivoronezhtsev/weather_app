@@ -2,4 +2,6 @@
     <string name="app_name">WeatherApp</string>
     <string name="degree">°</string>
     <string name="service">OpenWeatherMap</string>
+    <string name="title_activity_input_city">Выберите населенный пункт</string>
+    <string name="continue_button">Продолжить</string>
 </resources>
