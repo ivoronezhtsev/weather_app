@@ -6,4 +6,5 @@ import ru.voronezhtsev.weatherapp.models.domain.Weather
 
 interface IWeatherRepository {
     fun getWeather(location: Location): Single<Weather>
+    fun getWeather(cityId: Long): Single<Weather>
 }

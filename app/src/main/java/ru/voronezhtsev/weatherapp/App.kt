@@ -12,6 +12,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerWeatherComponent.builder().weatherModule(WeatherModule(this)).build()
+        component = DaggerWeatherComponent.builder().component(this).build();
     }
 }

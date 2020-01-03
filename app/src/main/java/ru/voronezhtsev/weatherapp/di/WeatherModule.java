@@ -13,28 +13,28 @@ import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO;
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter;
 import ru.voronezhtsev.weatherapp.data.remote.ForecastsService;
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService;
+import ru.voronezhtsev.weatherapp.data.repositories.CityChoicePreferencesRepository;
+import ru.voronezhtsev.weatherapp.data.repositories.CityRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.DefaultWeatherRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.LocationRepository;
 import ru.voronezhtsev.weatherapp.data.repositories.WeatherLocalRepository;
+import ru.voronezhtsev.weatherapp.domain.ICityChoiceRepository;
+import ru.voronezhtsev.weatherapp.domain.ICityRepository;
 import ru.voronezhtsev.weatherapp.domain.ILocationRepository;
 import ru.voronezhtsev.weatherapp.domain.IWeatherLocalRepository;
 import ru.voronezhtsev.weatherapp.domain.IWeatherRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
+import ru.voronezhtsev.weatherapp.presentation.CityChoicePresenter;
+import ru.voronezhtsev.weatherapp.presentation.MainPresenter;
 
 @Module
 public class WeatherModule {
 
-    private Context mContext;
-
-    public WeatherModule(Context context) {
-        mContext = context;
-    }
-
     @Provides
     @Singleton
-    ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService) {
-        return new ForecastsRepository(ForecastsDAO.getInstance(mContext), new ResponseConverter(),
+    ForecastsRepository provodeForecastsRepository(ForecastsService forecastsService, Context context) {
+        return new ForecastsRepository(ForecastsDAO.getInstance(context), new ResponseConverter(),
                 forecastsService);
     }
 
@@ -69,14 +69,14 @@ public class WeatherModule {
 
     @Provides
     @Singleton
-    ILocationRepository provideLocationRepository() {
-        return new LocationRepository(mContext);
+    ILocationRepository provideLocationRepository(Context context) {
+        return new LocationRepository(context);
     }
 
     @Singleton
     @Provides
-    IWeatherLocalRepository provideWeatherLocalRepository() {
-        return new WeatherLocalRepository(mContext);
+    IWeatherLocalRepository provideWeatherLocalRepository(Context context) {
+        return new WeatherLocalRepository(context);
     }
 
     @Provides
@@ -85,5 +85,31 @@ public class WeatherModule {
                                                IWeatherRepository weatherRepository,
                                                IWeatherLocalRepository weatherLocalRepository) {
         return new WeatherInteractor(weatherRepository, locationRepository, weatherLocalRepository);
+    }
+
+    @Singleton
+    @Provides
+    ICityRepository provideCityRepository(Context context) {
+        return new CityRepository(context);
+    }
+
+    @Singleton
+    @Provides
+    MainPresenterFactory provideMainPresenterFactory(WeatherInteractor weatherInteractor, ForecastsRepository forecastsRepository,
+                                       ICityRepository cityRepository, IWeatherRepository weatherRepository) {
+        return new MainPresenterFactory(weatherInteractor, forecastsRepository, cityRepository, weatherRepository);
+    }
+
+    @Singleton
+    @Provides
+    CityChoicePresenter provideCityChoicePresenter(ICityChoiceRepository cityChoiceRepository,
+                                                   ICityRepository cityRepository) {
+        return new CityChoicePresenter(cityChoiceRepository, cityRepository);
+    }
+
+    @Singleton
+    @Provides
+    ICityChoiceRepository provideICityChoiceRepository(Context context) {
+        return new CityChoicePreferencesRepository(context);
     }
 }

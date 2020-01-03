@@ -10,15 +10,17 @@ import io.reactivex.SingleEmitter
 import ru.voronezhtsev.weatherapp.domain.ILocationRepository
 import ru.voronezhtsev.weatherapp.models.domain.Location
 
-class LocationRepository(private val mContext: Context) : ILocationRepository {
+class LocationRepository(private val context: Context) : ILocationRepository {
     override val location: Single<Location?>
-        get() = if (ActivityCompat.checkSelfPermission(mContext, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+        get() = Single.just(Location("55.33", "37.42"))
+    /*if (ActivityCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
             Single.create { emitter: SingleEmitter<Location?> -> emitter.onError(SecurityException("Need location permissions")) }
         } else Single.create { emitter: SingleEmitter<Location?> ->
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation.addOnSuccessListener { location: android.location.Location ->
-                val locationInfo = Location(location.latitude.toString(), location.longitude.toString())
-                emitter.onSuccess(locationInfo)
+                //val locationInfo = Location(location.latitude.toString(), location.longitude.toString())
+                emitter.onSuccess(Location("55,33", "37,42"))
             }
-        }
+
+        }*/
 }

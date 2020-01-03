@@ -9,4 +9,6 @@ interface MainView : MvpView {
     fun showWeather(weather: WeatherModel)
 
     fun showForecast(forecast: List<Forecast>)
+
+    fun showInputCity(list: Map<String, Long>)
 }

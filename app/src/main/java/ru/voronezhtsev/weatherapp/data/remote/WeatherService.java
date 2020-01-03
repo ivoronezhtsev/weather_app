@@ -8,4 +8,6 @@ import ru.voronezhtsev.weatherapp.models.data.network.WeatherResponse;
 public interface WeatherService {
     @GET("weather")
     Single<WeatherResponse> getWeather(@Query("lat") String latitude, @Query("lon") String longtitude, @Query("appid") String appid);
+    @GET("weather")
+    Single<WeatherResponse> getWeather(@Query("id") String id, @Query("appid") String appid);
 }

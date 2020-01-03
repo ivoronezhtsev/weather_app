@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <stroke
-        android:color="#ffffff"
+        android:color="@android:color/tab_indicator_text"
         android:width="2dp" />
 
     <corners
