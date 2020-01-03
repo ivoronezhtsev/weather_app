@@ -1,0 +1,29 @@
+[
+  {
+    "id": 524901,
+    "name": "Moscow",
+    "country": "RU",
+    "coord": {
+      "lon": 37.615555,
+      "lat": 55.75222
+    }
+  },
+  {
+    "id": 473778,
+    "name": "Vidnoye",
+    "country": "RU",
+    "coord": {
+      "lon": 37.70966,
+      "lat": 55.552391
+    }
+  },
+  {
+    "id": 535121,
+    "name": "Lipetsk",
+    "country": "RU",
+    "coord": {
+      "lon": 39.570759,
+      "lat": 52.603111
+    }
+  }
+]
