@@ -14,7 +14,8 @@ class WeatherInteractor(private val weatherRepository: IWeatherRepository,
     val weather: Single<Weather>
         get() = locationRepository.location
                 .flatMap { location: Location? ->
-                    weatherRepository.getWeather(location!!).subscribeOn(Schedulers.io())
+                    weatherRepository.getWeather(location!!)
+                            .subscribeOn(Schedulers.io())
                             .map { weather: Weather ->
                                 weatherLocalRepository.save(weather).subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -24,7 +25,8 @@ class WeatherInteractor(private val weatherRepository: IWeatherRepository,
                 }
     @SuppressLint("CheckResult")
     fun getWeather(cityId: Long): Single<Weather> {
-        return weatherRepository.getWeather(cityId).subscribeOn(Schedulers.io())
+        return weatherRepository.getWeather(cityId)
+                .subscribeOn(Schedulers.io())
                 .map { weather: Weather ->
                     weatherLocalRepository.save(weather).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())

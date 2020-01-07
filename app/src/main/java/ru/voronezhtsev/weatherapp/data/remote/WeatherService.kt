@@ -7,8 +7,8 @@ import ru.voronezhtsev.weatherapp.models.data.network.WeatherResponse
 
 interface WeatherService {
     @GET("weather")
-    fun getWeather(@Query("lat") latitude: String?, @Query("lon") longtitude: String?, @Query("appid") appid: String?): Single<WeatherResponse?>?
+    fun getWeather(@Query("lat") latitude: String?, @Query("lon") longtitude: String?, @Query("appid") appid: String?): Single<WeatherResponse>
 
     @GET("weather")
-    fun getWeather(@Query("id") latitude: String?, @Query("appid") appid: String?): Single<WeatherResponse?>?
+    fun getWeather(@Query("id") latitude: String?, @Query("appid") appid: String?): Single<WeatherResponse?>
 }

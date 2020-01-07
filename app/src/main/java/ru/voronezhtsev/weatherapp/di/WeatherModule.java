@@ -26,7 +26,6 @@ import ru.voronezhtsev.weatherapp.domain.IWeatherLocalRepository;
 import ru.voronezhtsev.weatherapp.domain.IWeatherRepository;
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor;
 import ru.voronezhtsev.weatherapp.presentation.CityChoicePresenter;
-import ru.voronezhtsev.weatherapp.presentation.MainPresenter;
 
 @Module
 public class WeatherModule {
