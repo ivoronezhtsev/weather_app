@@ -7,7 +7,6 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.voronezhtsev.weatherapp.App
 import ru.voronezhtsev.weatherapp.App.Companion.component
 import ru.voronezhtsev.weatherapp.R
 
@@ -26,11 +25,10 @@ class CityChoiceActivity : MvpAppCompatActivity(), CityChoiceView {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, list.keys.toTypedArray())
         cityInput.setAdapter(adapter);
 
-        //todo Проверить только при клике или при вводе и нажатию enter тоже срабатывает
         cityInput.setOnItemClickListener { parent, _, position, _ ->
-            val cityId = list[parent.getItemAtPosition(position).toString()]
-            presenter.save(cityId!!)
-            startActivity(MainActivity.newIntent(this, cityId!!))
+            val cityId = list.getValue(parent.getItemAtPosition(position).toString())
+            presenter.save(cityId)
+            startActivity(MainActivity.newIntent(this, cityId))
             finish()
         }
     }
