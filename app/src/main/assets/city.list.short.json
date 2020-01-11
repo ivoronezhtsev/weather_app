@@ -34,5 +34,14 @@
       "lon": 39.333057,
       "lat": 43.906113
     }
+  },
+  {
+    "id": 5391997,
+    "name": "San Francisco County",
+    "country": "US",
+    "coord": {
+      "lon": -122.45108,
+      "lat": 37.766602
+    }
   }
 ]

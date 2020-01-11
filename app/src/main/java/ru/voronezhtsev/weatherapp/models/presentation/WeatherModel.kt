@@ -6,5 +6,5 @@ data class WeatherModel(
         val temp: String,
         val city: String,
         @DrawableRes
-        val icon: Int?
+        val icon: Int
 )

@@ -68,5 +68,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     override fun showWeather(weather: WeatherModel) {
         currentTemp.text = weather.temp
         currentCity.text = weather.city
+        weatherCondition.setImageDrawable(getDrawable(weather.icon))
     }
 }

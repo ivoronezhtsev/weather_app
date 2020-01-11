@@ -10,15 +10,13 @@ import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository
 import ru.voronezhtsev.weatherapp.domain.ICityRepository
 import ru.voronezhtsev.weatherapp.domain.IWeatherRepository
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor
-import ru.voronezhtsev.weatherapp.models.domain.Weather
-import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
-import kotlin.math.roundToLong
 
 @InjectViewState
 class MainPresenter(private val weatherInteractor: WeatherInteractor,
                     private val forecastsRepository: ForecastsRepository,
                     private val cityRepository: ICityRepository,
                     private val weatherRepository: IWeatherRepository,
+                    private val mainScreenConverter: MainScreenConverter,
                     private val city: Long?) : MvpPresenter<MainView>() {
     companion object {
         private const val TAG = "MainPresenter"
@@ -31,7 +29,7 @@ class MainPresenter(private val weatherInteractor: WeatherInteractor,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
-                    viewState.showWeather(convert(response))
+                    viewState.showWeather(mainScreenConverter.convert(response))
                 },
                         {   //todo Отобразить алерт о том что не удалось получить данные с сервера
                             throwable ->
@@ -61,10 +59,7 @@ class MainPresenter(private val weatherInteractor: WeatherInteractor,
         weatherRepository.getWeather(city)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response -> viewState.showWeather(convert(response)) },
+                .subscribe({ response -> viewState.showWeather(mainScreenConverter.convert(response)) },
                         {})
     }
-
-    private fun convert(weather: Weather) =
-            WeatherModel(weather.temp.roundToLong().toString(), weather.city, null)
 }
