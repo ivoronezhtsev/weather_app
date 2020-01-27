@@ -12,7 +12,6 @@ import ru.voronezhtsev.weatherapp.data.remote.ForecastsService
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService
 import ru.voronezhtsev.weatherapp.data.repositories.*
 import ru.voronezhtsev.weatherapp.domain.*
-import ru.voronezhtsev.weatherapp.presentation.CityChoicePresenter
 import ru.voronezhtsev.weatherapp.presentation.MainScreenConverter
 import javax.inject.Singleton
 
@@ -85,19 +84,6 @@ class WeatherModule {
                                     cityRepository: ICityRepository?, weatherRepository: IWeatherRepository?,
                                     mainScreenConverter: MainScreenConverter): MainPresenterFactory {
         return MainPresenterFactory(weatherInteractor!!, forecastsRepository!!, cityRepository!!, weatherRepository!!, mainScreenConverter)
-    }
-
-    @Singleton
-    @Provides
-    fun provideCityChoicePresenter(cityChoiceRepository: ICityChoiceRepository?,
-                                   cityRepository: ICityRepository?): CityChoicePresenter {
-        return CityChoicePresenter(cityChoiceRepository!!, cityRepository!!)
-    }
-
-    @Singleton
-    @Provides
-    fun provideICityChoiceRepository(context: Context?): ICityChoiceRepository {
-        return CityChoicePreferencesRepository(context!!)
     }
 
     @Singleton

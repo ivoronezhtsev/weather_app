@@ -6,101 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
-    <AutoCompleteTextView
-        android:id="@+id/cityInput"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="@dimen/city_input_margin"/>
-
-    <TextView
-        android:id="@+id/currentCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/vertical_guideline"
-        app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
-        tools:text="Видное"
-        app:layout_constraintBottom_toTopOf="@id/current_time_text_clock"
-        android:layout_marginBottom="10dp"
-        android:textStyle="bold" />
-
-    <TextClock
-        android:id="@+id/current_time_text_clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:format24Hour="EEE, dd MMM HH:mm"
-        android:format12Hour="EEE, dd MMM h:mm a"
-        app:layout_constraintStart_toStartOf="@id/vertical_guideline"
-        app:layout_constraintEnd_toEndOf="@id/vertical_guideline"
-        app:layout_constraintBottom_toTopOf="@id/currentTemp"
-        android:layout_marginBottom="10dp"
-        tools:text="чт, 23 мая 11:03"/>
-    <TextView
-        android:id="@+id/currentTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
-        app:layout_constraintStart_toEndOf="@id/vertical_guideline"
-        app:layout_constraintTop_toTopOf="@id/horizontal_guideline"
-        tools:text="18" />
-
-    <ImageView
-        android:id="@+id/weatherCondition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/currentTemp"
-        tools:background="@drawable/icon01d"
-        app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
-        app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/degree"
-        android:textSize="48sp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline"
-        app:layout_constraintStart_toEndOf="@id/currentTemp"
-        app:layout_constraintTop_toTopOf="@id/horizontal_guideline" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_forecast_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.70" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/forecastRecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/service_text_view"
+        android:theme="@style/ToolBarStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/horizontal_forecast_guideline"
-        android:background="@drawable/rectangle" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <TextView
-        android:id="@+id/service_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/toolbar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:text="@string/add_text"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                app:layout_constraintRight_toLeftOf="@id/add_place_button"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/add_text" />
+
+            <ImageView
+                android:id="@+id/add_place_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_26"
+                android:tint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/add_place_accessibility" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/container"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="OpenWeatherMap"
-        android:text="@string/service"
-        android:textColor="@color/white" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

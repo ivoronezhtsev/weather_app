@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <dimen name="city_input_margin">16dp</dimen>
+    <dimen name="add_place_button_margin">64dp</dimen>
 </resources>

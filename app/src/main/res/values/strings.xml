@@ -3,4 +3,12 @@
     <string name="degree">°</string>
     <string name="service">OpenWeatherMap</string>
     <string name="input_city">Выберите город</string>
+    <string name="add_hint">Добавить город</string>
+    <string name="add_text">Места</string>
+    <string name="settings">Настройки</string>
+    <string name="add_place_accessibility">Добавить место</string>
+    <string name="no_place_added">Чтобы добавить сюда местоположение нажмите на плюс в правом
+        верхнем углу</string>
+    <string name="add_place_hint">Начните вводить ваше местоположение набрав первые две буквы
+        населеннного пункта</string>
 </resources>

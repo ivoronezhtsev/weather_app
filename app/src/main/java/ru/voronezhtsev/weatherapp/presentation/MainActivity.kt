@@ -1,73 +1,80 @@
 package ru.voronezhtsev.weatherapp.presentation
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.View.VISIBLE
-import android.widget.ArrayAdapter
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.View.GONE
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_no_place.*
 import ru.voronezhtsev.weatherapp.App.Companion.component
 import ru.voronezhtsev.weatherapp.R
-import ru.voronezhtsev.weatherapp.models.data.network.Forecast
+import ru.voronezhtsev.weatherapp.models.presentation.CityModel
 import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 
-class MainActivity : MvpAppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView, OnPlaceClickListener {
 
     companion object {
         private const val REQUEST_COARSE_LOCATION: Int = 1
-        private const val CITY_ID_PREF = "cityId"
-        private const val EXTRA_CITY_ID = "cityId"
-        fun newIntent(context: Context, cityId: Long): Intent {
-            val intent = Intent(context, MainActivity::class.java)
-            intent.putExtra(EXTRA_CITY_ID, cityId)
-            return intent
-        }
     }
-
     @InjectPresenter
     internal lateinit var presenter: MainPresenter
+    lateinit var cities: List<CityModel>;
 
     @ProvidePresenter
-    fun providePresenter(): MainPresenter {
-        val cityId = intent?.extras?.getLong(EXTRA_CITY_ID)
-        if(cityId == 0L || cityId == null) {
-            throw IllegalStateException("EXTRA_CITY_ID not defined")
-        }
-        return component.mainPresenterFactory.get(cityId)
-    }
+    fun providePresenter(): MainPresenter = component.mainPresenterFactory.get(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        forecastRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_COARSE_LOCATION)
+        add_place_button.setOnClickListener { v: View -> presenter.addPlace() }
     }
 
-    override fun showForecast(forecast: List<Forecast>) {
-        forecastRecycler.adapter = ForecastAdapter(forecast)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
     }
 
-    override fun showInputCity(list: Map<String, Long>) {
-        cityInput.visibility = VISIBLE;
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, list.keys.toTypedArray())
-        cityInput.setAdapter(adapter);
+    override fun showNoPlacesAdded(cityList: List<CityModel>) {
 
-        cityInput.setOnItemClickListener {
-            parent, _, position, _ ->
-            val cityId = list[parent.getItemAtPosition(position).toString()]
-            presenter.load(cityId!!)
+        cities = cityList
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(container.id, NoPlaceFragment.newInstance("", ""));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit()
+    }
+
+    override fun addPlace() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(container.id, AddPlaceFragment.newInstance(cities))
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    override fun showWeather(weather: List<WeatherModel>) {
+        noPlaceTextHolder.visibility = GONE
+        weatherList.layoutManager = LinearLayoutManager(this)
+        weatherList.adapter = WeatherAdapter(weather)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
         }
+        return super.onOptionsItemSelected(item)
     }
 
-    override fun showWeather(weather: WeatherModel) {
-        currentTemp.text = weather.temp
-        currentCity.text = weather.city
-        weatherCondition.setImageDrawable(getDrawable(weather.icon))
+    override fun onClick(cityId: Long) {
+        presenter.load(cityId)
     }
 }

@@ -1,14 +1,11 @@
 package ru.voronezhtsev.weatherapp.presentation
 
 import com.arellomobile.mvp.MvpView
-import ru.voronezhtsev.weatherapp.models.data.network.Forecast
+import ru.voronezhtsev.weatherapp.models.presentation.CityModel
 import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 
 interface MainView : MvpView {
-
-    fun showWeather(weather: WeatherModel)
-
-    fun showForecast(forecast: List<Forecast>)
-
-    fun showInputCity(list: Map<String, Long>)
+    fun showNoPlacesAdded(cityList: List<CityModel>)
+    fun addPlace()
+    fun showWeather(weather: List<WeatherModel>)
 }
