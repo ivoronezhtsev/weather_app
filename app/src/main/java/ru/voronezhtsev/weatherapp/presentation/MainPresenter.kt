@@ -51,8 +51,8 @@ class MainPresenter(private val weatherInteractor: WeatherInteractor,
         weatherRepository.getWeather(city)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { viewState.hideProgressBar() }
                 .subscribe({
-                    viewState.hideProgressBar()
                     val weather = mutableListOf<WeatherModel>()
                     weather.add(mainScreenConverter.convert(it))
                     viewState.showWeather(weather)
