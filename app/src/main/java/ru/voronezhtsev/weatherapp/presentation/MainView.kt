@@ -8,4 +8,6 @@ interface MainView : MvpView {
     fun showNoPlacesAdded(cityList: List<CityModel>)
     fun addPlace()
     fun showWeather(weather: List<WeatherModel>)
+    fun showProgressBar()
+    fun hideProgressBar()
 }
