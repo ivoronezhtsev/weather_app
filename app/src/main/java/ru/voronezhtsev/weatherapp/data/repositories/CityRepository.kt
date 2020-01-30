@@ -10,7 +10,7 @@ import ru.voronezhtsev.weatherapp.models.domain.CityModel
 class CityRepository(private val context: Context) : ICityRepository {
     override val list: Single<Array<CityModel>>
         get() = Single.fromCallable {
-            val json = context.assets.open(CITY_LIST_FILE).bufferedReader().use { it -> it.readText() }
+            val json = context.assets.open(CITY_LIST_FILE).bufferedReader().use { it.readText() }
             val gson = Gson()
             return@fromCallable gson.fromJson(json, Array<City>::class.java)
         }.flatMap {
