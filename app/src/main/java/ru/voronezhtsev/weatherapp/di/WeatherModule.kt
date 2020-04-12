@@ -8,10 +8,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voronezhtsev.weatherapp.data.db.ForecastsDAO
 import ru.voronezhtsev.weatherapp.data.db.ResponseConverter
+import ru.voronezhtsev.weatherapp.data.db.WeatherDao
 import ru.voronezhtsev.weatherapp.data.remote.ForecastsService
 import ru.voronezhtsev.weatherapp.data.remote.WeatherService
-import ru.voronezhtsev.weatherapp.data.repositories.*
-import ru.voronezhtsev.weatherapp.domain.*
+import ru.voronezhtsev.weatherapp.data.repositories.CityRepository
+import ru.voronezhtsev.weatherapp.data.repositories.DefaultWeatherRepository
+import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository
+import ru.voronezhtsev.weatherapp.domain.ICityRepository
+import ru.voronezhtsev.weatherapp.domain.IWeatherRepository
+import ru.voronezhtsev.weatherapp.domain.WeatherInteractor
 import ru.voronezhtsev.weatherapp.presentation.MainScreenConverter
 import javax.inject.Singleton
 
@@ -48,42 +53,29 @@ class WeatherModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(weatherService: WeatherService?): IWeatherRepository {
-        return DefaultWeatherRepository(weatherService!!)
+    fun provideWeatherRepository(weatherService: WeatherService?, context: Context): IWeatherRepository {
+        return DefaultWeatherRepository(weatherService!!, WeatherDao.getInstance(context))
     }
 
     @Provides
     @Singleton
-    fun provideLocationRepository(context: Context?): ILocationRepository {
-        return LocationRepository(context!!)
+    fun provideWeatherInteractor(weatherRepository: IWeatherRepository): WeatherInteractor {
+        return WeatherInteractor(weatherRepository)
     }
 
     @Singleton
     @Provides
-    fun provideWeatherLocalRepository(context: Context?): IWeatherLocalRepository {
-        return WeatherLocalRepository(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideWeatherInteractor(locationRepository: ILocationRepository?,
-                                 weatherRepository: IWeatherRepository?,
-                                 weatherLocalRepository: IWeatherLocalRepository?): WeatherInteractor {
-        return WeatherInteractor(weatherRepository!!, locationRepository!!, weatherLocalRepository!!)
+    fun provideCityRepository(context: Context): ICityRepository {
+        return CityRepository(context)
     }
 
     @Singleton
     @Provides
-    fun provideCityRepository(context: Context?): ICityRepository {
-        return CityRepository(context!!)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMainPresenterFactory(weatherInteractor: WeatherInteractor?, forecastsRepository: ForecastsRepository?,
-                                    cityRepository: ICityRepository?, weatherRepository: IWeatherRepository?,
-                                    mainScreenConverter: MainScreenConverter): MainPresenterFactory {
-        return MainPresenterFactory(weatherInteractor!!, forecastsRepository!!, cityRepository!!, weatherRepository!!, mainScreenConverter)
+    fun provideMainPresenterFactory(cityRepository: ICityRepository,
+                                    weatherRepository: IWeatherRepository,
+                                    mainScreenConverter: MainScreenConverter,
+                                    weatherInteractor: WeatherInteractor): MainPresenterFactory {
+        return MainPresenterFactory(cityRepository, weatherRepository, mainScreenConverter, weatherInteractor)
     }
 
     @Singleton

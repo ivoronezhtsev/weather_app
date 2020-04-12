@@ -1,7 +1,7 @@
 [
   {
     "id": 524901,
-    "name": "Moscow",
+    "name": "Москва",
     "country": "RU",
     "coord": {
       "lon": 37.615555,
@@ -10,7 +10,7 @@
   },
   {
     "id": 473778,
-    "name": "Vidnoye",
+    "name": "Видное",
     "country": "RU",
     "coord": {
       "lon": 37.70966,
@@ -19,7 +19,7 @@
   },
   {
     "id": 535121,
-    "name": "Lipetsk",
+    "name": "Липецк",
     "country": "RU",
     "coord": {
       "lon": 39.570759,
@@ -28,7 +28,7 @@
   },
   {
     "id": 536625,
-    "name": "Lazarevskoye",
+    "name": "Лазаревское",
     "country": "RU",
     "coord": {
       "lon": 39.333057,
