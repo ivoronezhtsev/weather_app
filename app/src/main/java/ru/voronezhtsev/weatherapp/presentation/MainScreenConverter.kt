@@ -9,14 +9,23 @@ import kotlin.math.roundToLong
 
 class MainScreenConverter {
     private val iconMap = mapOf("13d" to R.drawable.icon13d,
-            "13n" to R.drawable.icon13d,
-            "02d" to R.drawable.icon02d,
-            "01n" to R.drawable.icon01n,
             "01d" to R.drawable.icon01d,
-            "03n" to R.drawable.icon03d,
+            "01n" to R.drawable.icon01n,
+            "02d" to R.drawable.icon02d,
+            "02n" to R.drawable.icon02n,
             "03d" to R.drawable.icon03d,
+            "03n" to R.drawable.icon03d,
             "04d" to R.drawable.icon04d,
             "04n" to R.drawable.icon04d,
+            "09n" to R.drawable.icon09n,
+            "09d" to R.drawable.icon09n,
+            "10d" to R.drawable.icon10d,
+            "10n" to R.drawable.icon10n,
+            "11d" to R.drawable.icon11d,
+            "11n" to R.drawable.icon11d,
+            "13d" to R.drawable.icon13d,
+            "13n" to R.drawable.icon13d,
+            "50d" to R.drawable.icon50d,
             "50n" to R.drawable.icon50d)
 
     private val cityMap = mapOf(
@@ -36,7 +45,9 @@ class MainScreenConverter {
             "rain" to "дождь",
             "thunderstorm" to "гроза",
             "snow" to "снег",
-            "mist" to "туман"
+            "mist" to "туман",
+            "light rain" to "небольшой дождь",
+            "light shower snow" to "небольшой ливневый снег"
     )
 
     fun convert(weather: List<Weather>): List<WeatherModel> {
@@ -44,12 +55,14 @@ class MainScreenConverter {
         for (w in weather) {
             val formatter = SimpleDateFormat("dd.MM HH:mm", Locale.getDefault());
             weatherList.add(WeatherModel(
-                    w.temp.roundToLong().toString(),
+                    convertTemp(w.temp),
                     cityMap.getValue(w.cityName),
                     formatter.format(w.datetime),
                     iconMap.getValue(w.iconCode),
-                    description.getValue(w.description)))
+                    description.getOrDefault(w.description, w.description)))
         }
         return weatherList
     }
+
+    private fun convertTemp(temp: Double) = if (temp > 0) "+${temp.roundToLong()}" else "-${temp.roundToLong()}"
 }

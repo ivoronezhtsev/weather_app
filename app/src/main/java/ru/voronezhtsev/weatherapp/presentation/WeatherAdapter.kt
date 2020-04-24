@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voronezhtsev.weatherapp.R
 import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 
-class WeatherAdapter(private val weather: MutableList<WeatherModel>, private val listener: View.OnClickListener)
+class WeatherAdapter(private val weather: MutableList<WeatherModel>, private val listener: View.OnClickListener?)
     : RecyclerView.Adapter<WeatherAdapter.WeatherItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherItemHolder {
@@ -40,7 +40,7 @@ class WeatherAdapter(private val weather: MutableList<WeatherModel>, private val
         private val refreshButton: ImageView = itemView.findViewById(R.id.refreshButton)
 
 
-        fun bind(weather: WeatherModel, listener: View.OnClickListener) {
+        fun bind(weather: WeatherModel, listener: View.OnClickListener?) {
             weatherIcon.setImageDrawable(itemView.context.getDrawable(weather.icon))
             city.text = weather.city
             loadTime.text = weather.dateTime

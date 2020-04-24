@@ -15,9 +15,11 @@ import ru.voronezhtsev.weatherapp.data.repositories.CityRepository
 import ru.voronezhtsev.weatherapp.data.repositories.DefaultWeatherRepository
 import ru.voronezhtsev.weatherapp.data.repositories.ForecastsRepository
 import ru.voronezhtsev.weatherapp.domain.ICityRepository
-import ru.voronezhtsev.weatherapp.domain.IWeatherRepository
+import ru.voronezhtsev.weatherapp.domain.WeatherRepository
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor
 import ru.voronezhtsev.weatherapp.presentation.MainScreenConverter
+import ru.voronezhtsev.weatherapp.presentation.MainScreenViewModelFactory
+import ru.voronezhtsev.weatherapp.presentation.WeatherListViewModelFactory
 import javax.inject.Singleton
 
 @Module
@@ -53,13 +55,13 @@ class WeatherModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(weatherService: WeatherService?, context: Context): IWeatherRepository {
+    fun provideWeatherRepository(weatherService: WeatherService?, context: Context): WeatherRepository {
         return DefaultWeatherRepository(weatherService!!, WeatherDao.getInstance(context))
     }
 
     @Provides
     @Singleton
-    fun provideWeatherInteractor(weatherRepository: IWeatherRepository): WeatherInteractor {
+    fun provideWeatherInteractor(weatherRepository: WeatherRepository): WeatherInteractor {
         return WeatherInteractor(weatherRepository)
     }
 
@@ -71,16 +73,22 @@ class WeatherModule {
 
     @Singleton
     @Provides
-    fun provideMainPresenterFactory(cityRepository: ICityRepository,
-                                    weatherRepository: IWeatherRepository,
-                                    mainScreenConverter: MainScreenConverter,
-                                    weatherInteractor: WeatherInteractor): MainPresenterFactory {
-        return MainPresenterFactory(cityRepository, weatherRepository, mainScreenConverter, weatherInteractor)
+    fun privideMainScreenConverter(): MainScreenConverter {
+        return MainScreenConverter()
     }
 
     @Singleton
     @Provides
-    fun privideMainScreenConverter(): MainScreenConverter {
-        return MainScreenConverter()
+    fun provideWeatherListViewModelFactory(weatherInteractor: WeatherInteractor): WeatherListViewModelFactory {
+        return WeatherListViewModelFactory(weatherInteractor)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMainScreenViewModelFactory(cityRepository: ICityRepository,
+                                          mainScreenConverter: MainScreenConverter,
+                                          weatherInteractor: WeatherInteractor): MainScreenViewModelFactory {
+
+        return MainScreenViewModelFactory(cityRepository, mainScreenConverter, weatherInteractor)
     }
 }

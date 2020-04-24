@@ -1,82 +1,74 @@
 package ru.voronezhtsev.weatherapp.presentation
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.weather_list_fragment.*
+import ru.voronezhtsev.weatherapp.App.Companion.component
 import ru.voronezhtsev.weatherapp.R
+import ru.voronezhtsev.weatherapp.models.presentation.CityModel
+import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_WEATHER = "weather"
+private const val ARG_CITIES = "cities"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [WeatherListFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [WeatherListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class WeatherListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    //private var listener: OnFragmentInteractionListener? = null
+    private var weather: List<WeatherModel>? = null
+    private var cities: List<CityModel>? = null
+    private lateinit var viewModel: WeatherListViewModel
+    private lateinit var weatherAdapter: WeatherAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, component.weatherListViewModelFactory).get(WeatherListViewModel::class.java)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            weather = it.getParcelableArrayList(ARG_WEATHER)
+            cities = it.getParcelableArrayList(ARG_CITIES)
         }
+        weatherAdapter = WeatherAdapter(emptyList<WeatherModel>().toMutableList(), View.OnClickListener { viewModel.loadWeather(getCityId((it.tag as AppCompatTextView).text.toString())) });
+        viewModel.weatheListLiveData.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                noPlaceTextHolder.visibility = GONE
+            }
+            weatherAdapter.updateData(it)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.weather_list_fragment, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        //listener?.onFragmentInteraction(uri)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        weatherList.layoutManager = LinearLayoutManager(requireContext())
+        weatherList.adapter = weatherAdapter
+        super.onViewCreated(view, savedInstanceState)
+        if (!weather.isNullOrEmpty()) {
+            noPlaceTextHolder.visibility = GONE
+            weatherAdapter.updateData(weather!!.toMutableList());
+        }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    /*interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }*/
+    fun updateWeather(city: Long) = viewModel.loadWeather(city)
+
+    private fun getCityId(city: String) = cities?.find { it.name.equals(city) }!!.id
+
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NoPlaceFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(weather: List<WeatherModel>, cities: List<CityModel>) =
                 WeatherListFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putParcelableArrayList(ARG_WEATHER, ArrayList(weather))
+                        putParcelableArrayList(ARG_CITIES, ArrayList(cities))
                     }
                 }
     }

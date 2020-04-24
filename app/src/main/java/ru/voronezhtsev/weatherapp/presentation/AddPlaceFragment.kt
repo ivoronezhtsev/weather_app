@@ -19,11 +19,11 @@ private const val ARG_CITIES = "cities"
  */
 class AddPlaceFragment : Fragment() {
     private var cities: ArrayList<CityModel>? = null
-    private var listener: OnPlaceClickListener? = null
+    private var listener: OnAddPlaceClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cities = arguments?.getParcelableArrayList<CityModel>(ARG_CITIES)
+        cities = arguments?.getParcelableArrayList(ARG_CITIES)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +31,8 @@ class AddPlaceFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_add_place, container, false)
     }
 
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-        if (activity !is OnPlaceClickListener) {
-            throw RuntimeException("Activity should implement OnPlaceClickListener")
-        }
-        listener = activity
+    fun setOnAddPlaceClickListener(listener: OnAddPlaceClickListener) {
+        this.listener = listener
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +42,7 @@ class AddPlaceFragment : Fragment() {
         cityInput.setAdapter(adapter);
         cityInput.setOnItemClickListener { parent, _, position, _ ->
             val cityId = map[parent.getItemAtPosition(position).toString()]
-            listener?.onClick(cityId!!)
+            listener?.onAddPlace(cityId!!)
             requireActivity().onBackPressed()
         }
     }
@@ -64,5 +60,8 @@ class AddPlaceFragment : Fragment() {
                         putParcelableArrayList(ARG_CITIES, ArrayList(cities))
                     }
                 }
+    }
+    interface OnAddPlaceClickListener {
+        fun onAddPlace(city: Long)
     }
 }

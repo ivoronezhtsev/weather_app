@@ -42,7 +42,7 @@ class WeatherDao private constructor(context: Context) : SQLiteOpenHelper(contex
     }
 
     fun load(): List<Weather> {
-        val cursor = readableDatabase.query("WEATHER", null, null, null, null, null, null)
+        val cursor = readableDatabase.query("WEATHER", null, null, null, null, null, "CITY_NAME")
         val weatherList = mutableListOf<Weather>()
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
