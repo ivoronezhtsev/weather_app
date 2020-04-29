@@ -10,7 +10,7 @@ import ru.voronezhtsev.weatherapp.models.domain.Weather
 
 class WeatherDao private constructor(context: Context) : SQLiteOpenHelper(context, "weather.db", null, 1) {
 
-    private val DATABASE_DDL = "create table WEATHER( " +
+    private val DATABASE_DDL = "create table if not exists WEATHER( " +
             "CITY_NAME text, " +
             "TEMPERATURE real, " +
             "ICON_CODE text, " +
@@ -20,8 +20,8 @@ class WeatherDao private constructor(context: Context) : SQLiteOpenHelper(contex
 
     companion object : SingletonHolder<WeatherDao, Context>(::WeatherDao)
 
-    override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(DATABASE_DDL)
+    override fun onCreate(db: SQLiteDatabase?) {
+        db?.execSQL(DATABASE_DDL)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -36,7 +36,7 @@ class WeatherDao private constructor(context: Context) : SQLiteOpenHelper(contex
         contentValues.put("CITY_NAME", response.name)
         contentValues.put("TEMPERATURE", response.main.temp)
         contentValues.put("ICON_CODE", response.weather[0].icon)
-        contentValues.put("DATETIME", response.dt)
+        contentValues.put("DATETIME", response.dateTime)
         contentValues.put("DESCRIPTION", response.weather[0].description)
         return contentValues
     }

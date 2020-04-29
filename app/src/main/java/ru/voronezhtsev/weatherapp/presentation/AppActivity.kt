@@ -13,17 +13,19 @@ import ru.voronezhtsev.weatherapp.App.Companion.component
 import ru.voronezhtsev.weatherapp.R
 import ru.voronezhtsev.weatherapp.models.presentation.CityModel
 import ru.voronezhtsev.weatherapp.models.presentation.MainScreenModel
-import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
+import ru.voronezhtsev.weatherapp.presentation.forecast.ForecastFragment
+import ru.voronezhtsev.weatherapp.presentation.weatherlist.WeatherListFragment
 
-class AppActivity : AppCompatActivity(), AddPlaceFragment.OnAddPlaceClickListener {
+class AppActivity : AppCompatActivity(), AddPlaceFragment.OnAddPlaceClickListener, WeatherListFragment.OnWeatherClickListener {
 
     companion object {
         private const val REQUEST_COARSE_LOCATION: Int = 1
         private const val WEATHER_LIST_FRAGMENT = "WEATHER_LIST_FRAGMENT"
+        private val FORECAST_FRAGMENT = "FORECAST_FRAGMENT"
     }
 
-    internal lateinit var viewModel: MainScreenViewModel
-    lateinit var cities: List<CityModel>;
+    private lateinit var viewModel: MainScreenViewModel
+    private lateinit var cities: List<CityModel>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,7 @@ class AppActivity : AppCompatActivity(), AddPlaceFragment.OnAddPlaceClickListene
         viewModel.mainScreenModelLiveData.observe(this, Observer {
             showWeather(it)
         })
+
     }
 
     override fun onStart() {
@@ -52,6 +55,8 @@ class AppActivity : AppCompatActivity(), AddPlaceFragment.OnAddPlaceClickListene
     override fun onAttachFragment(fragment: Fragment) {
         if (fragment is AddPlaceFragment) {
             fragment.setOnAddPlaceClickListener(this)
+        } else if (fragment is WeatherListFragment) {
+            fragment.setOnWeatherClickListener(this)
         }
     }
 
@@ -85,5 +90,12 @@ class AppActivity : AppCompatActivity(), AddPlaceFragment.OnAddPlaceClickListene
     override fun onAddPlace(city: Long) {
         val fragment = supportFragmentManager.findFragmentByTag(WEATHER_LIST_FRAGMENT) as WeatherListFragment
         fragment.updateWeather(city)
+    }
+
+    override fun onWeatherClick(cityName: String) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(container.id, ForecastFragment.newInstance(cityName), FORECAST_FRAGMENT)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }

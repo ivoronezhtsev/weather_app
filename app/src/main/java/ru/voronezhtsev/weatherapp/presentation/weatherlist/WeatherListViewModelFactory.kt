@@ -1,4 +1,4 @@
-package ru.voronezhtsev.weatherapp.presentation
+package ru.voronezhtsev.weatherapp.presentation.weatherlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,13 +1,16 @@
 package ru.voronezhtsev.weatherapp.presentation
 
 import ru.voronezhtsev.weatherapp.R
+import ru.voronezhtsev.weatherapp.models.domain.Forecast
 import ru.voronezhtsev.weatherapp.models.domain.Weather
+import ru.voronezhtsev.weatherapp.models.presentation.ForecastModel
 import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToLong
 
 class MainScreenConverter {
+    private val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     private val iconMap = mapOf("13d" to R.drawable.icon13d,
             "01d" to R.drawable.icon01d,
             "01n" to R.drawable.icon01n,
@@ -28,40 +31,27 @@ class MainScreenConverter {
             "50d" to R.drawable.icon50d,
             "50n" to R.drawable.icon50d)
 
-    private val cityMap = mapOf(
-            "Moscow" to "Москва",
-            "Vidnoye" to "Видное",
-            "Lipetsk" to "Липецк",
-            "Lazarevskoye" to "Лазаревское"
-    )
-
-    private val description = mapOf(
-            "clear sky" to "ясно",
-            "few clouds" to "малооблачно",
-            "scattered clouds" to "переменная облачность",
-            "broken clouds" to "облачно",
-            "overcast clouds" to "пасмурно",
-            "shower rain" to "ливень",
-            "rain" to "дождь",
-            "thunderstorm" to "гроза",
-            "snow" to "снег",
-            "mist" to "туман",
-            "light rain" to "небольшой дождь",
-            "light shower snow" to "небольшой ливневый снег"
-    )
 
     fun convert(weather: List<Weather>): List<WeatherModel> {
         val weatherList = mutableListOf<WeatherModel>()
         for (w in weather) {
-            val formatter = SimpleDateFormat("dd.MM HH:mm", Locale.getDefault());
             weatherList.add(WeatherModel(
                     convertTemp(w.temp),
-                    cityMap.getValue(w.cityName),
+                    w.cityName,
                     formatter.format(w.datetime),
                     iconMap.getValue(w.iconCode),
-                    description.getOrDefault(w.description, w.description)))
+                    w.description))
         }
         return weatherList
+    }
+
+    fun convertForecast(forecast: List<Forecast>): List<ForecastModel> {
+        val result = mutableListOf<ForecastModel>()
+        for (f in forecast) {
+            result.add(ForecastModel(formatter.format(f.dateTime * 1000), iconMap.getValue(f.iconCode),
+                    convertTemp(f.temp), f.description))
+        }
+        return result
     }
 
     private fun convertTemp(temp: Double) = if (temp > 0) "+${temp.roundToLong()}" else "-${temp.roundToLong()}"

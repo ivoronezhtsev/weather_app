@@ -1,15 +1,14 @@
-package ru.voronezhtsev.weatherapp.presentation
+package ru.voronezhtsev.weatherapp.presentation.weatherlist
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.voronezhtsev.weatherapp.domain.WeatherInteractor
 import ru.voronezhtsev.weatherapp.models.presentation.WeatherModel
+import ru.voronezhtsev.weatherapp.presentation.MainScreenConverter
 
 class WeatherListViewModel(private val weatherInteractor: WeatherInteractor): ViewModel() {
 

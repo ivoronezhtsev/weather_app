@@ -20,7 +20,8 @@ class MainScreenViewModel(private val cityRepository: ICityRepository,
     @SuppressLint("CheckResult")
     fun loadWeather() {
         //todo Прогрессбар пока погода грузится
-        cityRepository.list.subscribeOn(Schedulers.io())
+        cityRepository.list
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     val cityList = mutableListOf<CityModel>()

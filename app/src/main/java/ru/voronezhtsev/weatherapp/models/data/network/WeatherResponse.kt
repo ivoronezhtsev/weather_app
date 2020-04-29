@@ -1,15 +1,15 @@
 package ru.voronezhtsev.weatherapp.models.data.network
 
-data class WeatherResponse(val id: Long,
-                           val coord: Coord,
-                           val main: Main,
-                           val weather: List<Weather>,
-                           val name: String,
-                           val dt: Long,
-                           val timezone: Long)
+import com.google.gson.annotations.SerializedName
 
-data class Main(val temp: Double)
+data class WeatherResponse(@SerializedName("id") val id: Long,
+                           @SerializedName("main") val main: Main,
+                           @SerializedName("weather") val weather: List<Weather>,
+                           @SerializedName("name") val name: String,
+                           @SerializedName("dt") val dateTime: Long
+)
 
-data class Weather(val id: Int, val icon: String, val description: String)
-
-data class Coord(val lon: String, val lat: String)
+data class Weather(@SerializedName("id") val id: Int,
+                   @SerializedName("icon") val icon: String,
+                   @SerializedName("description") val description: String
+)
